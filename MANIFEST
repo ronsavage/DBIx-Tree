@@ -1,4 +1,5 @@
-Changes
+Build.PL
+CHANGES
 Changelog.ini
 Makefile.PL
 MANIFEST
@@ -10,3 +11,4 @@ examples/tkexample.pl
 examples/tk-tree-example.pl
 t/INSTALL.SQL
 README
+META.yml

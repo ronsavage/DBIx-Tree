@@ -3,6 +3,7 @@ Revision history for Perl extension DBIx::Tree
 1.91  Wed Sep 15 14:08:00 2010
 	- Maintenance taken over by Ron Savage.
 	- Version numbering changed to x.xx format.
+	- Add Build.PL.
 	- Rename Changes to CHANGES.
 	- Move ./Tree.pm into ./lib/DBIx/Tree.pm.
 	- Move ./test.pl into ./t/test.t.

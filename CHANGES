@@ -18,7 +18,7 @@ Revision history for Perl extension DBIx::Tree
 		huhlig [...] clickconsulting.com).
 	- Eliminate usage of file ./PWD.
 	- Fix t/*.t to use DBI_DSN, DBI_USER and DBI_PASS from the environment, if defined,
-		or to default to MySQL.
+		or to default to SQLite.
 	- Fix bug where when the constructor call includes both match_data and
 		start_id, and the id of the match_data is not start_id, then the _do_query()
 		method would fail to find a record, which meant both the callbacks passed in

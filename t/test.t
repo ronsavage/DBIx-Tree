@@ -30,9 +30,9 @@ print "ok 1\n";
 ############# create and populate the table we need.
 my @opts =
 (
-$ENV{DBI_DSN} || 'dbi:mysql:test',
-$ENV{DBI_USER} || 'test',
-$ENV{DBI_PASS} || 'test',
+$ENV{DBI_DSN} || 'dbi:SQLite:dbname=/tmp/test.sqlite',
+$ENV{DBI_USER} || '',
+$ENV{DBI_PASS} || '',
 );
 
 use DBI;

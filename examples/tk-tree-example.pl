@@ -9,21 +9,16 @@ use DBIx::Tree;
 
 use vars qw(@list);   # the list of items in the tree.
 
-# Open the file containing the connection string, user id, and password.
-#
-my @dbiparms;
-open (PWD, "../PWD") 
-  or die "Could not open PWD for reading!";
-while(<PWD>) {
-    chomp;
-    push @dbiparms, $_;
-}
-close (PWD);
+my @opts =
+(
+$ENV{DBI_DSN} || 'dbi:SQLite:dbname=/tmp/test.sqlite',
+$ENV{DBI_USER} || '',
+$ENV{DBI_PASS} || '',
+);
 
-# Connect to the datasource.
-#
 use DBI;
-my $dbh = DBI->connect(@dbiparms);
+my $dbh = DBI->connect(@opts, {RaiseError => 0, PrintError => 1, AutoCommit => 1});
+
 if ( !defined $dbh ) {
     die $DBI::errstr;
 }
@@ -33,7 +28,7 @@ if ( !defined $dbh ) {
 my $dbtree = new DBIx::Tree( connection => $dbh, 
                             table      => 'food', 
                             method     => sub { disp_tree(@_) },
-                            columns    => ['food_id', 'food', 'parent_id'],
+                            columns    => ['id', 'food', 'parent_id'],
                             start_id   => '001');
 
 # Execute the query, and form the tree.

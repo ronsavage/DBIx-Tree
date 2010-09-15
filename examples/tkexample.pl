@@ -8,18 +8,16 @@ use DBIx::Tree;
 
 use vars qw(@list);
 
-open (PWD, "../PWD") 
-  or die "Could not open PWD for reading!";
-
-my @dbiparms;
-while(<PWD>) {
-    chomp;
-    push @dbiparms, $_;
-}
-close (PWD);
+my @opts =
+(
+$ENV{DBI_DSN} || 'dbi:SQLite:dbname=/tmp/test.sqlite',
+$ENV{DBI_USER} || '',
+$ENV{DBI_PASS} || '',
+);
 
 use DBI;
-my $dbh = DBI->connect(@dbiparms);
+my $dbh = DBI->connect(@opts, {RaiseError => 0, PrintError => 1, AutoCommit => 1});
+
 if ( !defined $dbh ) {
     die $DBI::errstr;
 }
@@ -27,7 +25,7 @@ if ( !defined $dbh ) {
 my $tree = new DBIx::Tree( connection => $dbh, 
                           table      => 'food', 
                           method     => sub { disp_tree(@_) },
-                          columns    => ['food_id', 'food', 'parent_id'],
+                          columns    => ['id', 'food', 'parent_id'],
                           start_id   => '001');
 $tree->traverse;
 

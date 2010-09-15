@@ -17,8 +17,9 @@ Revision history for Perl extension DBIx::Tree
 	- Patched as per RT#32461 (kindly reported (in 2008) by
 		huhlig [...] clickconsulting.com).
 	- Eliminate usage of file ./PWD.
-	- Fix t/*.t to use DBI_DSN, DBI_USER and DBI_PASS from the environment, if defined,
-		or to default to SQLite. MySQL is no longer hard-coded.
+	- Fix t/*.t and examples/*.pl to use DBI_DSN, DBI_USER and DBI_PASS
+		from the environment, if defined, or to default to SQLite.
+		MySQL is no longer hard-coded anywhere.
 	- Fix bug where when the constructor call includes both match_data and
 		start_id, and the id of the match_data is not start_id, then the _do_query()
 		method would fail to find a record, which meant both the callbacks passed in
@@ -29,13 +30,13 @@ Revision history for Perl extension DBIx::Tree
 
 1.9   Sun Feb 14 12:00:00 2003
 
-0.90  Sun Aug 30 17:08:09 1998
-    - original version; created by h2xs 1.18
-
 0.91  Thu Aug 24 20:36:00 2000
     - added performance improvements, sorting, and bug fixes from
       Jan Mach <machj@ders.cz>
     - added limit and matching support from Ilia Lobsanov <ilia@lobsanov.com>
+
+0.90  Sun Aug 30 17:08:09 1998
+    - original version; created by h2xs 1.18
 
 X.XX
     - active development begun by Aaron Mackey <amackey@virginia.edu>

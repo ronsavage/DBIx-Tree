@@ -698,6 +698,9 @@ improvements, ordering handling for tree output, and other bug fixes.
 Aaron Mackey <amackey@virginia.edu> has continued active development
 on the module based on Brian Jepson's version 0.91 release.
 
+Co-maintenance since V 1.91 is by Ron Savage <rsavage@cpan.org>.
+Uses of 'I' in previous versions is not me, but will be hereafter.
+
 =head1 SEE ALSO
 
 perl(1).

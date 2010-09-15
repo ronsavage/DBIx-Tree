@@ -99,7 +99,6 @@ if ($tree->_do_query) {
 ############# call tree
 use vars qw($compare);
 
-print STDERR "Call traverse 1\n";
 $tree->traverse;
 $rc = $compare eq 'FoodBeans and NutsBeansBlack BeansKidney BeansBlack Kidney BeansRed Kidney BeansNutsPecansDairyBeveragesCoffee MilkSkim MilkWhole MilkCheesesCheddarGoudaMuensterStiltonSwiss';
 if ($rc == 1) {
@@ -118,7 +117,6 @@ my $tree = new DBIx::Tree(connection => $dbh,
                           start_id   => '001',
                           match_data => 'Dairy');
 $compare = "";
-print STDERR "Call traverse 2\n";
 $tree->traverse;
 $rc = $compare eq 'Dairy';
 
@@ -131,7 +129,6 @@ if ($rc == 1) {
 ############# test local variables in traverse()
 
 $compare = "";
-print STDERR "Call traverse 3\n";
 $tree->traverse(start_id => '011', threshold => 2, match_data => '', limit => 2);
 $rc = $compare eq 'Coffee MilkSkim Milk';
 
@@ -144,7 +141,6 @@ if ($rc == 1) {
 ### OK, now see if the default settings still work:
 
 $compare = "";
-print STDERR "Call traverse 4\n";
 $tree->traverse;
 $rc = $compare eq 'Dairy';
 
@@ -164,7 +160,6 @@ my $tree = new DBIx::Tree(connection => $dbh,
                           columns    => ['id', 'food', 'parent_id'],
                           start_id   => '001');
 $compare = "";
-print STDERR "Call traverse 5\n";
 $tree->traverse;
 $rc = $compare eq 'FoodBeans and NutsBeansBlack BeansKidney BeansBlack Kidney BeansRed Kidney BeansNutsPecansDairyBeveragesCoffee MilkSkim MilkWhole MilkCheesesCheddarGoudaMuensterStiltonSwiss';
 
@@ -184,7 +179,6 @@ my $tree = new DBIx::Tree(connection => $dbh,
                           columns    => ['id', 'food', 'parent_id'],
                           start_id   => '001');
 $compare = "";
-print STDERR "Call traverse 6\n";
 $tree->traverse;
 $rc = $compare eq 'FoodBeans and NutsBeansBlack BeansKidney BeansBlack Kidney BeansRed Kidney BeansNutsPecansDairyBeveragesCoffee MilkSkim MilkWhole MilkCheesesCheddarGoudaMuensterStiltonSwiss';
 
@@ -197,7 +191,6 @@ if ($rc == 1) {
 ############# check out the recursive function: repeat above tests
 
 $compare = "";
-print STDERR "Call traverse 7\n";
 $tree->traverse(recursive => 1);
 $rc = $compare eq 'FoodBeans and NutsBeansBlack BeansKidney BeansBlack Kidney BeansRed Kidney BeansNutsPecansDairyBeveragesCoffee MilkSkim MilkWhole MilkCheesesCheddarGoudaMuensterStiltonSwiss';
 

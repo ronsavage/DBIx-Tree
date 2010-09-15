@@ -34,8 +34,8 @@ sub new {
     $self->{dbh}->{RaiseError} = 1;
 
     $self->{table}  = $args{table};
-    $self->{method} = $args{method} || undef;
-    $self->{post_method} = $args{post_method} || undef;
+    $self->{method} = $args{method};
+    $self->{post_method} = $args{post_method};
     $self->{sth}    = $args{sth} || $args{sql};
 
     my $columns = $args{columns};
@@ -214,7 +214,7 @@ sub _handle_node {
 	# In this case, the above special call for finding the root does
 	# not return a valid value for item.
 
-    if (defined($item) && defined($self->{method}) && $level >= $self->{threshold})
+    if (defined($item) && $self->{method} && ($level >= $self->{threshold}) )
 	{
     $self->{method}->
 	( item        => $item,
@@ -239,7 +239,7 @@ sub _handle_node {
     pop @{$parentids};
     pop @{$parentnames};
 
-    if (defined($item) && defined($self->{post_method}) && $level >= $self->{threshold})
+    if (defined($item) && $self->{post_method} && ($level >= $self->{threshold}) )
 	{
     $self->{post_method}->
 	( item        => $item,
@@ -360,7 +360,7 @@ sub _traverse_linear {
 		id          => $current,
 		parent_id   => \@parent_id,
 		parent_name => \@parent_name )
-		  if (defined $self->{method} && $level >= $self->{threshold});
+		  if ($self->{method} && $level >= $self->{threshold});
 
 
       }
@@ -390,13 +390,15 @@ sub _traverse_linear {
       my $current = pop @parent_id;
       my $item = pop @parent_name;
 
+      if ($self->{post_method} && ($level >= $self->{threshold}) )
+	  {
       $self->{post_method}->
 	  ( item        => $item,
 	    level       => $level,
 	    id          => $current,
 	    parent_id   => \@parent_id,
-	    parent_name => \@parent_name )
-	      if (defined $self->{post_method} && $level >= $self->{threshold});
+	    parent_name => \@parent_name );
+	  }
 
       $level--;
     }

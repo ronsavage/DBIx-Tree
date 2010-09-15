@@ -1,0 +1,47 @@
+Revision history for Perl extension DBIx::Tree
+
+0.90  Sun Aug 30 17:08:09 1998
+    - original version; created by h2xs 1.18
+
+0.91  Thu Aug 24 20:36:00 2000
+    - added performance improvements, sorting, and bug fixes from
+      Jan Mach <machj@ders.cz>
+    - added limit and matching support from Ilia Lobsanov <ilia@lobsanov.com>
+
+X.XX
+    - active development begun by Aaron Mackey <amackey@virginia.edu>
+    - DBIx::Tree project now hosted at SourceForge.net
+    - $DBIx::Tree::VERSION now defined by CVS Revision tag; i.e. version
+      numbers will change very quickly now - don't be alarmed.
+    - added 'sth' and 'sql' alternatives to 'table' specification in
+      new() constructor.
+    - add 'post_method' callback option; now DBIx::Tree can make
+      summary reports, as well as "worm" it's way around a tree
+    - added various missing documentation.
+    - deprecated tree() in favor of traverse()
+    - added optional arguments start_id and threshold to new(),
+      so that the traversal can be initiated at alternative subtree
+      roots (by specifying different start_id's), and/or completely
+      ignore levels higher than the threshold level.
+    - removed the requirement for the user to run the do_query()
+      method before we traverse the tree (Cleaner interface?)
+    - allow traverse() to take a subset of the parameter hash that
+      new() accepts, in order to provide locally modified traversal
+      parameters (start_id, match_name, threshold, etc).
+    - added tests for most of this new stuff.
+    - added 'recursive' true/false flag argument to new/traverse;
+      default is false, which provides the usual "get all the data,
+      build the tree in memory and walk it" non-recursive traversal
+      method.  A true value makes the traversal occur with minimal
+      memory usage, but multiple database queries (to obtain the
+      children of each node separately).  This is useful in cases
+      where the tree is in fact very, very large, or when the user
+      only wants to traverse certain smaller subtrees of the data (via
+      the start_id argument to new/traverse).
+    - added tests for 'limit' and 'recursive' arguments.
+
+1.90 (bjepson)
+    - added check for prerequisites in Makefile.PL.
+    - changed default test to use DBD::mysql, since MySQL has become
+      much more widespread than mSQL.
+    - added message when test.pl ignores a DROP error.

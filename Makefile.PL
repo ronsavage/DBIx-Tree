@@ -1,20 +1,31 @@
-use ExtUtils::MakeMaker qw(prompt WriteMakefile);
+use ExtUtils::MakeMaker;
+
 # See lib/ExtUtils/MakeMaker.pm for details of how to influence
 # the contents of the Makefile that is written.
-WriteMakefile(
-  AUTHOR => 'Brian Jepson (bjepson@jepstone.net)',
-  NAME	=> 'DBIx::Tree',
-  VERSION_FROM => 'Tree.pm', # finds $VERSION
-  PREREQ_PM    => {
-      'DBD::mysql'  => '0',
-  }
+
+WriteMakefile
+(
+	($] ge '5.005') ?
+	(
+		AUTHOR   => 'B Jepson <bjepston@jepstone.net>',
+		ABSTRACT => 'Generate a tree from a self-referential database table',
+    ) : (),
+	clean =>
+	{
+		FILES => 'blib/* Makefile MANIFEST DBIx-Tree-*'
+	},
+	dist =>
+	{
+		COMPRESS => 'gzip',
+		SUFFIX   => 'gz'
+	},
+	DISTNAME  => 'DBIx-Tree',
+	NAME      => 'DBIx::Tree',
+	PL_FILES  => {},
+	PREREQ_PM =>
+	{
+		Test::More => 0,
+		Test::Pod  => 0,
+	},
+	VERSION_FROM => 'lib/DBIx/Tree.pm',
 );
-
-$connstr = prompt ("DBI Connection String?", "DBI:mysql:test");
-$userid  = prompt ("User ID?", "");
-$passwd  = prompt ("Password?", "");
-
-open(PWD, ">PWD") || die "Could not open PWD for writing!";
-print PWD $connstr, "\n";
-print PWD $userid, "\n";
-print PWD $passwd, "\n";

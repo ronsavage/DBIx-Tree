@@ -1,5 +1,32 @@
 Revision history for Perl extension DBIx::Tree
 
+1.91  Wed Sep 15 14:08:00 2010
+	- Maintenance taken over by Ron Savage.
+	- Version numbering changed to x.xx format.
+	- Rename Changes to CHANGES.
+	- Move ./Tree.pm into ./lib/DBIx/Tree.pm.
+	- Move ./test.pl into ./t/test.t.
+	- Move ./INSTALL.SQL into ./t/.
+	- Add ./t/pod.t.
+	- Remove execute bit from doc files.
+	- Rewrite Makefile.PL.
+	- Used ini.report.pl (from Module::Metadata::Changes) to generate
+		machine-readable Changelog.ini.
+	- Patched as per RT#32461 (kindly reported (in 2008) by
+		huhlig [...] clickconsulting.com).
+	- Eliminate usage of file ./PWD.
+	- Fix t/*.t to use DBI_DSN, DBI_USER and DBI_PASS from the environment, if defined,
+		or to default to MySQL.
+	- Fix bug where when the constructor call includes both match_data and
+		start_id, and the id of the match_data is not start_id, then the _do_query()
+		method would fail to find a record, which meant both the callbacks passed in
+		to the constructor (method and post_method), if defined, would be called with
+		an undefined value for $param{item}. This meant the callbacks would be called
+		one more time that they should have been. This faulty call took place before
+		any valid call took place.
+
+1.9   Sun Feb 14 12:00:00 2003
+
 0.90  Sun Aug 30 17:08:09 1998
     - original version; created by h2xs 1.18
 

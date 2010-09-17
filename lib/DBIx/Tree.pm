@@ -5,6 +5,7 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 
 require Exporter;
 use Carp;
+use DBI;
 
 @ISA = qw(Exporter AutoLoader);
 # Items to export into callers namespace by default. Note: do not export
@@ -13,7 +14,7 @@ use Carp;
 @EXPORT = qw();
 @EXPORT_OK = qw();
 
-( $VERSION ) = '$Revision: 1.91 $' =~ /(?:\$Revision:\s+)?(\S+)/;
+( $VERSION ) = '$Revision: 1.92 $' =~ /(?:\$Revision:\s+)?(\S+)/;
 
 # Preloaded methods go here.
 

@@ -1,5 +1,12 @@
 Revision history for Perl extension DBIx::Tree
 
+1.92  Fri Sep 17 12:46:00 2010
+	- DBIx::Tree didn't 'use' DBI, but it did use $DBI::errstr.
+	  So I've added a 'use DBI' to Tree.pm.
+	- Add Carp and DBI to list of dependencies, in Build.PL and Makefile.PL.
+	- Specify recent version numbers for Carp, DBI, Test::More and Test::Pod.
+	- As always, thanx to CPAN testers.
+
 1.91  Wed Sep 15 14:08:00 2010
 	- Maintenance taken over by Ron Savage.
 	- Version numbering changed to x.xx format.

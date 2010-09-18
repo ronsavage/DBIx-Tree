@@ -1,21 +1,30 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 use strict;
+use warnings;
+
+use DBI;
+
+use DBIx::Tree;
+
+use File::Spec;
+use File::Temp;
+
 use Tk;
 use Tk::Label;
 use Tk::HList;
-use DBIx::Tree;
 
 use vars qw(@list);
 
-my @opts =
+my($dir)  = File::Temp -> newdir;
+my($file) = File::Spec -> catfile($dir, 'test.sqlite');
+my(@opts) =
 (
-$ENV{DBI_DSN} || 'dbi:SQLite:dbname=/tmp/test.sqlite',
+$ENV{DBI_DSN}  || "dbi:SQLite:dbname=$file",
 $ENV{DBI_USER} || '',
 $ENV{DBI_PASS} || '',
 );
 
-use DBI;
 my $dbh = DBI->connect(@opts, {RaiseError => 0, PrintError => 1, AutoCommit => 1});
 
 if ( !defined $dbh ) {

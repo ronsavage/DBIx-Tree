@@ -1,5 +1,13 @@
 Revision history for Perl extension DBIx::Tree
 
+1.93  Sat Sep 18 14:53:00 2010
+	- Use File::Temp to get a temp dir name, rather than using /tmp.
+	- Use File::Spec to combine that temp dir and the file name test.sqlite.
+	- Delete the file examples/textexample.pl, since it just duplicates the
+	  functionality of t/test.t.
+	- Add 'use warnings' to t/test.t and examples/*.pl, which means vars are
+	  now all declared.
+
 1.92  Fri Sep 17 12:46:00 2010
 	- DBIx::Tree didn't 'use' DBI, but it did use $DBI::errstr.
 	  So I've added a 'use DBI' to Tree.pm.

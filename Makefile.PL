@@ -26,6 +26,8 @@ WriteMakefile
 	{
 		Carp       => 1.08,
 		DBI        => 1.612,
+		File::Spec => 3.31,
+		File::Temp => 0.22,
 		Test::More => 0.94,
 		Test::Pod  => 1.44,
 	},

@@ -1,23 +1,38 @@
+use strict;
+use warnings;
+
+######################### We start with some black magic to print on failure.
+
+# Change 1..1 below to 1..last_test_to_print .
+# (It may become useful if the test is moved to ./t subdirectory.)
+
+our $compare;
+our $rc;
+
+our $loaded = 0;
+
+BEGIN { $| = 1; print "1..11\n"; }
+END {print "not ok 1\n" unless $loaded;}
+
 # Before `make install' is performed this script should be runnable with
 # `make test'. After `make install' it should work as `perl test.pl'
 
 sub disp_tree {
-    %param = @_;
+    my(%param) = @_;
 	#print STDERR ($param{item} || 'N/A'), "\n";
     my $item = $param{item};
     $item =~ s/^\s+//;
     $item =~ s/\s+$//;
     $compare .= $item;
 }
-######################### We start with some black magic to print on failure.
 
-# Change 1..1 below to 1..last_test_to_print .
-# (It may become useful if the test is moved to ./t subdirectory.)
-
-BEGIN { $| = 1; print "1..11\n"; }
-END {print "not ok 1\n" unless $loaded;}
+use DBI;
 
 use DBIx::Tree;
+
+use File::Spec;
+use File::Temp;
+
 $loaded = 1;
 print "ok 1\n";
 
@@ -28,14 +43,16 @@ print "ok 1\n";
 # of the test code):
 
 ############# create and populate the table we need.
-my @opts =
+
+my($dir)  = File::Temp -> newdir;
+my($file) = File::Spec -> catfile($dir, 'test.sqlite');
+my(@opts) =
 (
-$ENV{DBI_DSN} || 'dbi:SQLite:dbname=/tmp/test.sqlite',
+$ENV{DBI_DSN}  || "dbi:SQLite:dbname=$file",
 $ENV{DBI_USER} || '',
 $ENV{DBI_PASS} || '',
 );
 
-use DBI;
 my $dbh = DBI->connect(@opts, {RaiseError => 0, PrintError => 1, AutoCommit => 1});
 if ( defined $dbh ) {
         print "ok 2\n";
@@ -97,7 +114,6 @@ if ($tree->_do_query) {
 }
 
 ############# call tree
-use vars qw($compare);
 
 $tree->traverse;
 $rc = $compare eq 'FoodBeans and NutsBeansBlack BeansKidney BeansBlack Kidney BeansRed Kidney BeansNutsPecansDairyBeveragesCoffee MilkSkim MilkWhole MilkCheesesCheddarGoudaMuensterStiltonSwiss';

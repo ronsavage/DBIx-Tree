@@ -1,7 +1,6 @@
 Build.PL
 Changelog.ini
 CHANGES
-examples/textexample.pl
 examples/tk-tree-example.pl
 examples/tkexample.pl
 lib/DBIx/Tree.pm

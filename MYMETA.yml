@@ -21,6 +21,8 @@ provides:
 requires:
   Carp: 1.08
   DBI: 1.612
+  File::Spec: 3.31
+  File::Temp: 0.22
 resources:
   license: http://www.perlfoundation.org/artistic_license_1_0
 version: 1.92

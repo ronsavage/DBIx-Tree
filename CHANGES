@@ -1,5 +1,10 @@
 Revision history for Perl extension DBIx::Tree
 
+1.94  Mon Sep 20  9:06:00 2010
+	- Apparently DBD::SQLite does not ship with Perl 5.13.4, according to cpantesters
+	  (http://www.cpantesters.org/cpan/report/a402f106-c317-11df-bbe8-e11f06264d1f)
+	  so I've added it explicitly to Build.PL and Makefile.PL.
+
 1.93  Sat Sep 18 14:53:00 2010
 	- Use File::Temp to get a temp dir name, rather than using /tmp.
 	- Use File::Spec to combine that temp dir and the file name test.sqlite.

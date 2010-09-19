@@ -24,12 +24,13 @@ WriteMakefile
 	PL_FILES  => {},
 	PREREQ_PM =>
 	{
-		Carp       => 1.08,
-		DBI        => 1.612,
-		File::Spec => 3.31,
-		File::Temp => 0.22,
-		Test::More => 0.94,
-		Test::Pod  => 1.44,
+		Carp        => 1.08,
+		DBD::SQLite => 1.31,
+		DBI         => 1.612,
+		File::Spec  => 3.31,
+		File::Temp  => 0.22,
+		Test::More  => 0.94,
+		Test::Pod   => 1.44,
 	},
 	VERSION_FROM => 'lib/DBIx/Tree.pm',
 );

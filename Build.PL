@@ -13,10 +13,11 @@ my($builder) = Module::Build -> new
 	},
 	requires =>
 	{
-		Carp       => 1.08,
-		DBI        => 1.612,
-		File::Spec => 3.31,
-		File::Temp => 0.22,
+		Carp        => 1.08,
+		DBD::SQLite => 1.31,
+		DBI         => 1.612,
+		File::Spec  => 3.31,
+		File::Temp  => 0.22,
 	},
 ) -> create_build_script();
 

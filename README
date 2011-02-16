@@ -62,8 +62,8 @@ or (Win32 with MS Visual C++):
    nmake test
    nmake install
 
-When you tell a user id and password to the configuration portion of 
-Makefile.PL, be aware that this is being stored in a file called PWD. 
+When you tell a user id and password to the configuration portion of
+Makefile.PL, be aware that this is being stored in a file called PWD.
 It is recommended that you only choose a user id and password on a
 non-production server, since this module will drop and create a table
 in that data source (the food table).

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 
 use strict;
 use warnings;
@@ -33,8 +33,8 @@ if ( !defined $dbh ) {
 
 # Create a new instance of the DBIx::Tree object.
 #
-my $dbtree = new DBIx::Tree( connection => $dbh, 
-                            table      => 'food', 
+my $dbtree = new DBIx::Tree( connection => $dbh,
+                            table      => 'food',
                             method     => sub { disp_tree(@_) },
                             columns    => ['id', 'food', 'parent_id'],
                             start_id   => '001');
@@ -50,7 +50,7 @@ my $top = new MainWindow( -title  => "Tree" );
 # Create a scrolled Tree widget.  Behind the scenes, we're forming
 # each of the tree elements as a directory style listing. For example,
 # Skim Milk is represented as "Dairy/Beverages/Skim Milk".  As long
-# as we add the elements in the order in which they appear in the 
+# as we add the elements in the order in which they appear in the
 # tree, the tree will be able to figure out which element is the
 # parent of each node we add.
 #
@@ -69,7 +69,7 @@ $tree->pack( -expand => 'yes',
              -side   => 'top' );
 
 # When we ran $dbtree->tree earlier, the @list array was populated.
-# It doesn't have a top element, so we need to pre-pend one to the 
+# It doesn't have a top element, so we need to pre-pend one to the
 # list ('/' below).
 #
 foreach ( '/', @list ) {
@@ -77,7 +77,7 @@ foreach ( '/', @list ) {
     # We don't want the user to see "Dairy/Beverages/Skim Milk",
     # so we'll strip off all but the last words for the label.
     #
-    my $text = (split( /\//, $_ ))[-1]; 
+    my $text = (split( /\//, $_ ))[-1];
 
     # If we're on /, let's make its label blank.
     #
@@ -88,7 +88,7 @@ foreach ( '/', @list ) {
     # Add the item (in $_) with $text as the label.
     #
     $tree->add( $_, -text => $text );
-    
+
 }
 
 $tree->autosetmode();

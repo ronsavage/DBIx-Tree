@@ -1,5 +1,9 @@
 Revision history for Perl extension DBIx::Tree
 
+1.95  Web Feb 16 11:52:00 2011
+	- Replace /usr/bin/perl with /usr/bin/env perl.
+	- Replace common::sense with use strict and use warnings, to get uninit var warnings.
+
 1.94  Mon Sep 20  9:06:00 2010
 	- Apparently DBD::SQLite does not ship with Perl 5.13.4, according to cpantesters
 	  (http://www.cpantesters.org/cpan/report/a402f106-c317-11df-bbe8-e11f06264d1f)

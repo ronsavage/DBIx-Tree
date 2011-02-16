@@ -124,7 +124,7 @@ if ($rc == 1) {
 }
 
 }
-############# create another instance of the DBIx::Tree 
+############# create another instance of the DBIx::Tree
 {
 my $tree = new DBIx::Tree(connection => $dbh,
                           table      => 'food',

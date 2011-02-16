@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 
 use strict;
 use warnings;
@@ -31,8 +31,8 @@ if ( !defined $dbh ) {
     die $DBI::errstr;
 }
 
-my $tree = new DBIx::Tree( connection => $dbh, 
-                          table      => 'food', 
+my $tree = new DBIx::Tree( connection => $dbh,
+                          table      => 'food',
                           method     => sub { disp_tree(@_) },
                           columns    => ['id', 'food', 'parent_id'],
                           start_id   => '001');

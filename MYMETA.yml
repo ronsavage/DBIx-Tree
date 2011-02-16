@@ -8,7 +8,7 @@ build_requires:
 configure_requires:
   Module::Build: 0.36
 dynamic_config: 0
-generated_by: 'Module::Build version 0.3607'
+generated_by: 'Module::Build version 0.3603'
 license: artistic
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -25,5 +25,5 @@ requires:
   File::Spec: 3.31
   File::Temp: 0.22
 resources:
-  license: http://www.perlfoundation.org/artistic_license_1_0
+  license: http://opensource.org/licenses/artistic-license.php
 version: 1.94

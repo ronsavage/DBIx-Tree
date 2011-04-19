@@ -418,7 +418,7 @@ __END__
 
 =head1 NAME
 
-DBIx::Tree - Perl module for generating a tree from a self-referential table
+DBIx::Tree - Generate a tree from a self-referential database table
 
 =head1 SYNOPSIS
 

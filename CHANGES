@@ -5,6 +5,8 @@ Revision history for Perl extension DBIx::Tree
 	- Replace common::sense with use strict and use warnings, to get uninit var warnings.
 	- Remove reference to AutoLoader when setting @ISA, to stop warnings on recent Perls.
 	- Update pre-reqs: DBI to V 1.622 and DBD::SQLite to 1.37.
+	- Fix error in docs where it said calling new($sth => ...) meant you did not also need
+		new(connection => $dbh), but you do, to stop a prepare_cached error.
 
 1.94  Mon Sep 20  9:06:00 2010
 	- Apparently DBD::SQLite does not ship with Perl 5.13.4, according to cpantesters

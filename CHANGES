@@ -1,8 +1,10 @@
 Revision history for Perl extension DBIx::Tree
 
 1.95  Web Feb 16 11:52:00 2011
-	- Replace /usr/bin/perl with /usr/bin/env perl.
+	- Replace /usr/bin/perl with /usr/bin/env perl in examples/*.pl.
 	- Replace common::sense with use strict and use warnings, to get uninit var warnings.
+	- Remove reference to AutoLoader when setting @ISA, to stop warnings on recent Perls.
+	- Update pre-reqs: DBI to V 1.622 and DBD::SQLite to 1.37.
 
 1.94  Mon Sep 20  9:06:00 2010
 	- Apparently DBD::SQLite does not ship with Perl 5.13.4, according to cpantesters

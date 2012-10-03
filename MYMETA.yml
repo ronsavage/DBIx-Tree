@@ -17,13 +17,13 @@ name: DBIx-Tree
 provides:
   DBIx::Tree:
     file: lib/DBIx/Tree.pm
-    version: 1.94
+    version: 1.95
 requires:
   Carp: 1.08
-  DBD::SQLite: 1.31
-  DBI: 1.612
+  DBD::SQLite: 1.37
+  DBI: 1.622
   File::Spec: 3.31
   File::Temp: 0.22
 resources:
   license: http://opensource.org/licenses/artistic-license.php
-version: 1.94
+version: 1.95

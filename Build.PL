@@ -18,8 +18,8 @@ my($builder) = Module::Build -> new
  requires =>
  {
 	 Carp        => 1.08,
-	 DBD::SQLite => 1.31,
-	 DBI         => 1.612,
+	 DBD::SQLite => 1.37,
+	 DBI         => 1.622,
 	 File::Spec  => 3.31,
 	 File::Temp  => 0.22,
  },

@@ -14,7 +14,7 @@ use DBI;
 @EXPORT = qw();
 @EXPORT_OK = qw();
 
-( $VERSION ) = '$Revision: 1.94 $' =~ /(?:\$Revision:\s+)?(\S+)/;
+( $VERSION ) = '$Revision: 1.95 $' =~ /(?:\$Revision:\s+)?(\S+)/;
 
 # Preloaded methods go here.
 
@@ -536,8 +536,8 @@ and two Tk examples.
 
 =item connection
 
-A DBI connection handle.  Unnecessary if you plan to provide a
-prepared DBI statement handle via the 'sth' parameter.
+A DBI connection handle. The parameter is always required. Earlier versions of this doc said it was
+not necessary when using the $sth option, but in that case omitting it gets an error on prepare_cached.
 
 =item table
 

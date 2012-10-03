@@ -11,3 +11,4 @@ README
 t/INSTALL.SQL
 t/pod.t
 t/test.t
+META.json

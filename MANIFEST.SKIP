@@ -42,3 +42,4 @@
 \.pui$
 
 ^MYMETA.yml$
+^MYMETA\.json$

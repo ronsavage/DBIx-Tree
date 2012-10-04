@@ -536,7 +536,7 @@ and two Tk examples.
 
 =item connection
 
-A DBI connection handle. The parameter is always required. Earlier versions of this doc said it was
+A DBI connection handle. This parameter is always required. Earlier versions of this doc said it was
 not necessary when using the $sth option, but in that case omitting it gets an error on prepare_cached.
 
 =item table

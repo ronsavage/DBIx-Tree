@@ -31,6 +31,9 @@ WriteMakefile
 		File::Temp  => 0.22,
 		Test::More  => 0.94,
 		Test::Pod   => 1.44,
+		strict      => 0,
+		vars        => 0,
+		warnings    => 0,
 	},
 	VERSION_FROM => 'lib/DBIx/Tree.pm',
 );

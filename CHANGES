@@ -1,5 +1,9 @@
 Revision history for Perl extension DBIx::Tree
 
+1.96  Thu Nov  8 12:38:00 2012
+	- For pre-reqs such as strict, warnings, etc, which ship with Perl, set the version # to 0.
+		Reported as RT#80663 by Father Chrysostomos for Tree::DAG_Node.
+
 1.95  Web Feb 16 11:52:00 2011
 	- Replace /usr/bin/perl with /usr/bin/env perl in examples/*.pl.
 	- Replace common::sense with use strict and use warnings, to get uninit var warnings.

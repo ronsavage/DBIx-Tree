@@ -14,7 +14,7 @@ use DBI;
 @EXPORT = qw();
 @EXPORT_OK = qw();
 
-( $VERSION ) = '$Revision: 1.95 $' =~ /(?:\$Revision:\s+)?(\S+)/;
+( $VERSION ) = '$Revision: 1.96 $' =~ /(?:\$Revision:\s+)?(\S+)/;
 
 # Preloaded methods go here.
 

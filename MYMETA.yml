@@ -24,6 +24,9 @@ requires:
   DBI: 1.622
   File::Spec: 3.31
   File::Temp: 0.22
+  strict: 0
+  vars: 0
+  warnings: 0
 resources:
   license: http://opensource.org/licenses/artistic-license.php
 version: 1.95

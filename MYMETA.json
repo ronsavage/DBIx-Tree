@@ -31,7 +31,10 @@
             "DBD::SQLite" : "1.37",
             "DBI" : "1.622",
             "File::Spec" : "3.31",
-            "File::Temp" : "0.22"
+            "File::Temp" : "0.22",
+            "strict" : "0",
+            "vars" : "0",
+            "warnings" : "0"
          }
       }
    },

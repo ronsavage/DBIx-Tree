@@ -21,7 +21,7 @@ WriteMakefile
 	},
 	DISTNAME  => 'DBIx-Tree',
 	NAME      => 'DBIx::Tree',
-	LICENSE   => 'perl_5',
+	LICENSE   => 'artistic_2',
 	PL_FILES  => {},
 	PREREQ_PM =>
 	{

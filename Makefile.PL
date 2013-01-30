@@ -30,7 +30,7 @@ WriteMakefile
 		DBI         => 1.622,
 		File::Spec  => 3.31,
 		File::Temp  => 0.22,
-		Test::Simple=> 0.94,
+		Test::More=> 0.94,
 		Test::Pod   => 1.45,
 		strict      => 0,
 		vars        => 0,

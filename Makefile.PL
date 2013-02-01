@@ -31,7 +31,7 @@ WriteMakefile
 		File::Spec  => 3.31,
 		File::Temp  => 0.22,
 		Test::More=> 0.94,
-		Test::Pod   => 1.45,
+#		Test::Pod   => 1.45, # Make it optional. See t/pod.t
 		strict      => 0,
 		vars        => 0,
 		warnings    => 0,

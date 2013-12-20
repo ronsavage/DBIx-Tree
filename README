@@ -1,79 +1,49 @@
-Welcome to the DBIx::Tree module. This modules lets you turn things like:
+README file for DBIx::Tree.
 
-    food                food_id   parent_id
-    ==================  =======   =========
-    Food                001       NULL
-    Beans and Nuts      002       001
-    Beans               003       002
-    Nuts                004       002
-    Black Beans         005       003
-    Pecans              006       004
-    Kidney Beans        007       003
-    Red Kidney Beans    008       007
-    Black Kidney Beans  009       007
-    Dairy               010       001
-    Beverages           011       010
-    Whole Milk          012       011
-    Skim Milk           013       011
-    Cheeses             014       010
-    Cheddar             015       014
-    Stilton             016       014
-    Swiss               017       014
-    Gouda               018       014
-    Muenster            019       014
-    Coffee Milk         020       011
+See also: CHANGES and Changelog.ini.
 
-into:
+Warning: WinZip 8.1 and 9.0 both contain an 'accidental' bug which stops
+them recognizing POSIX-style directory structures in valid tar files.
+You are better off using a reliable tool such as InfoZip:
+ftp://ftp.info-zip.org/pub/infozip/
 
-    Food (001)
-      Dairy (010)
-        Beverages (011)
-          Coffee Milk (020)
-          Whole Milk (012)
-          Skim Milk (013)
-        Cheeses (014)
-          Cheddar (015)
-          Stilton (016)
-          Swiss (017)
-          Gouda (018)
-          Muenster (019)
-      Beans and Nuts (002)
-        Beans (003)
-          Black Beans (005)
-          Kidney Beans (007)
-            Red Kidney Beans (008)
-            Black Kidney Beans (009)
-        Nuts (004)
-          Pecans (006)
+1 Installing from a Unix-like distro
+------------------------------------
+shell>gunzip DBIx-Tree-1.96.tgz
+shell>tar mxvf DBIx-Tree-1.96.tar
 
-There are a couple of examples in the examples/ directory.
+On Unix-like systems, assuming you have installed Module::Build V 0.25+:
 
-To build this, do the following (Unix and Unix-like systems):
+shell>perl Build.PL
+shell>./Build
+shell>./Build test
+shell>./Build install
 
-   perl Makefile.PL
-   make
-   make test
-   make install
+On MS Windows-like systems, assuming you have installed Module::Build V 0.25+:
 
-or (Win32 with MS Visual C++):
+shell>perl Build.PL
+shell>perl Build
+shell>perl Build test
+shell>perl Build install
 
-   perl Makefile.PL
-   nmake
-   nmake test
-   nmake install
+Alternately, without Module::Build, you do this:
 
-When you tell a user id and password to the configuration portion of
-Makefile.PL, be aware that this is being stored in a file called PWD.
-It is recommended that you only choose a user id and password on a
-non-production server, since this module will drop and create a table
-in that data source (the food table).
+Note: 'make' on MS Windows-like systems may be called 'nmake' or 'dmake'.
 
-As of this version, this has only been tested on:
+shell>perl Makefile.PL
+shell>make
+shell>make test
+shell>su              (for Unix-like systems)
+shell>make install
+shell>exit            (for Unix-like systems)
 
-  Windows NT 4.0 SP3, ActivePerl 502, DBD::Sybase
-  Sparc/Linux 2.0.35, Perl 5.004_04, DBD::mSQL
-  RedHat Linux 6.1, Perl 5.005_04, DBD::mSQL
-  Mac OS X, Perl 5.6.0, Mac OS X 10.2.4
+On all systems:
 
-Brian Jepson, bjepson@jepstone.net
-Sourceforge Project Page: http://sourceforge.net/projects/dbix-tree/
+Run Tree.pm through your favourite pod2html translator.
+
+2 Installing from an ActiveState distro
+---------------------------------------
+shell>unzip DBIx-Tree-1.96.zip
+shell>ppm install --location=. DBIx-Tree
+shell>del DBIx-Tree-1.96.ppd
+shell>del PPM-DBIx-Tree-1.96.tar.gz

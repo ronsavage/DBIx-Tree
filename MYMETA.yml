@@ -16,7 +16,7 @@ name: DBIx-Tree
 provides:
   DBIx::Tree:
     file: lib/DBIx/Tree.pm
-    version: '1.96'
+    version: '1.97'
 requires:
   Carp: '1.08'
   DBD::SQLite: '1.37'
@@ -28,4 +28,4 @@ requires:
   warnings: '0'
 resources:
   license: http://www.perlfoundation.org/artistic_license_2_0
-version: '1.96'
+version: '1.97'

@@ -40,7 +40,7 @@
    "provides" : {
       "DBIx::Tree" : {
          "file" : "lib/DBIx/Tree.pm",
-         "version" : "1.96"
+         "version" : "1.97"
       }
    },
    "release_status" : "stable",
@@ -49,5 +49,5 @@
          "http://www.perlfoundation.org/artistic_license_2_0"
       ]
    },
-   "version" : "1.96"
+   "version" : "1.97"
 }

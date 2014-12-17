@@ -3,30 +3,29 @@ abstract: 'Generate a tree from a self-referential database table'
 author:
   - 'Ron Savage <ron@savage.net.au>'
 build_requires:
-  Test::More: 0.94
-  Test::Pod: 1.44
+  Test::More: '0.94'
 configure_requires:
-  Module::Build: 0.38
+  Module::Build: '0.38'
 dynamic_config: 1
-generated_by: 'Module::Build version 0.4003, CPAN::Meta::Converter version 2.120630'
-license: artistic
+generated_by: 'Module::Build version 0.421, CPAN::Meta::Converter version 2.142060'
+license: artistic_2
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
-  version: 1.4
+  version: '1.4'
 name: DBIx-Tree
 provides:
   DBIx::Tree:
     file: lib/DBIx/Tree.pm
-    version: 1.96
+    version: '1.96'
 requires:
-  Carp: 1.08
-  DBD::SQLite: 1.37
-  DBI: 1.622
-  File::Spec: 3.31
-  File::Temp: 0.22
-  strict: 0
-  vars: 0
-  warnings: 0
+  Carp: '1.08'
+  DBD::SQLite: '1.37'
+  DBI: '1.622'
+  File::Spec: '3.31'
+  File::Temp: '0.22'
+  strict: '0'
+  vars: '0'
+  warnings: '0'
 resources:
-  license: http://www.perlfoundation.org/artistic_license_1_0
-version: 1.96
+  license: http://www.perlfoundation.org/artistic_license_2_0
+version: '1.96'

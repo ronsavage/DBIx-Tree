@@ -1,5 +1,11 @@
 Revision history for Perl extension DBIx::Tree
 
+1.97  Thu Dec 18 10:11:00 2014
+	- Rename CHANGES back to Changes.
+	- Put methods into alphabetical order.
+	- Reformat the code slightly.
+	- Restructure the docs.
+
 1.96  Thu Nov  8 12:38:00 2012
 	- No code changes.
 	- For pre-reqs such as strict, warnings, etc, which ship with Perl, set the version # to 0.

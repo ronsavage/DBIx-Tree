@@ -1,76 +1,32 @@
 package DBIx::Tree;
 
 use strict;
-use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
+use warnings;
+use warnings  qw(FATAL utf8); # Fatalize encoding glitches.
 
-require Exporter;
 use Carp;
+
 use DBI;
 
-@ISA = qw(Exporter);
-# Items to export into callers namespace by default. Note: do not export
-# names by default without a very good reason. Use EXPORT_OK instead.
-# Do not simply export all your public functions/methods/constants.
-@EXPORT = qw();
-@EXPORT_OK = qw();
+our $VERSION = '1.96';
 
-( $VERSION ) = '$Revision: 1.96 $' =~ /(?:\$Revision:\s+)?(\S+)/;
+# ------------------------------------------------
 
-# Preloaded methods go here.
-
-# Constructor.
-#
-sub new {
-
-    my $proto =  shift;
-    my $class = ref($proto) || $proto;
-    my $self = {};
-    bless ($self, $class);
-
-    my %args = @_;
-
-    $self->{dbh}    = $args{connection};
-
-#    $self->{dbh}->trace(1);
-    $self->{dbh}->{RaiseError} = 1;
-
-    $self->{table}  = $args{table};
-    $self->{method} = $args{method};
-    $self->{post_method} = $args{post_method};
-    $self->{sth}    = $args{sth} || $args{sql};
-
-    my $columns = $args{columns};
-    $self->{columns}          = $columns;
-    $self->{id_column}        = $columns->[0];
-    $self->{data_column}      = $columns->[1];
-    $self->{parent_id_column} = $columns->[2];
-    $self->{order_column}     = $columns->[3] if $#$columns > 2;
-    $self->{order_column}   ||= $self->{data_column};
-    $self->{order_direction}  = $columns->[4] if $#$columns > 3;
-    $self->{order_direction}||= ''; # hush undefined warnings
-
-    $self->{start_id} = $args{start_id} || 1;
-    $self->{threshold} = $args{threshold} || 1;
-    $self->{match_data} = $args{match_data};
-    $self->{limit} = $args{limit};
-
-    $self->{recursive} = $args{recursive} || 1;
-
-    return $self;
-}
-
-sub do_query {
-
+sub do_query
+{
     my $self = shift;
 
     carp "do_query() is now a private function - you need not call it yourself"
 	if $^W;
 
     $self->_do_query(@_);
-}
 
-sub _do_query {
+} # End of do_query.
 
+# ------------------------------------------------
+
+sub _do_query
+{
     my ($self, $parentid, $id, $level) = @_;
 
     my $sth;
@@ -148,54 +104,12 @@ sub _do_query {
 
     1; # return success
 
-}
+} # End of _do_query.
 
-sub tree {
+# ------------------------------------------------
 
-    carp("tree() use is deprecated; use traverse() instead.\n")
-	if $^W;
-
-    my $self = shift;
-    return $self->traverse(@_);
-}
-
-sub traverse {
-
-    my $self = shift;
-
-    # allow local arguments to override defaults set in constructor:
-    my %args = @_;
-    while (my ($key, $val) = each %args) {
-	($self->{$key}, $args{$key}) = ($args{$key}, $self->{$key})
-    }
-
-    # reset limit counter:
-    $self->{limit_left} = $self->{limit};
-
-    my $rc;
-    unless ($self->{recursive} || ($self->{threshold} gt 1 && $self->{limit}) ) {
-	$rc = $self->_traverse_linear;
-    } else {
-	$rc = $self->_traverse_recursive;
-    }
-
-    # restore object defaults:
-    while (my ($key, $val) = each %args) {
-	($self->{$key}, $args{$key}) = ($args{$key}, $self->{$key})
-    }
-
-    return $rc;
-}
-
-sub _traverse_recursive {
-
-    my $self = shift;
-
-    $self->_handle_node($self->{start_id}, undef, [], [], 1);
-}
-
-sub _handle_node {
-
+sub _handle_node
+{
     my ($self,
 	$id,
 	$item,
@@ -249,10 +163,86 @@ sub _handle_node {
 	  parent_id   => $parentids,
 	  parent_name => $parentnames );
 	}
-}
 
-sub _traverse_linear {
+} # End of _handle_node.
 
+# ------------------------------------------------
+
+sub new
+{
+    my $proto =  shift;
+    my $class = ref($proto) || $proto;
+    my $self = {};
+    bless ($self, $class);
+
+    my %args = @_;
+
+    $self->{dbh}    = $args{connection};
+
+#    $self->{dbh}->trace(1);
+    $self->{dbh}->{RaiseError} = 1;
+
+    $self->{table}  = $args{table};
+    $self->{method} = $args{method};
+    $self->{post_method} = $args{post_method};
+    $self->{sth}    = $args{sth} || $args{sql};
+
+    my $columns = $args{columns};
+    $self->{columns}          = $columns;
+    $self->{id_column}        = $columns->[0];
+    $self->{data_column}      = $columns->[1];
+    $self->{parent_id_column} = $columns->[2];
+    $self->{order_column}     = $columns->[3] if $#$columns > 2;
+    $self->{order_column}   ||= $self->{data_column};
+    $self->{order_direction}  = $columns->[4] if $#$columns > 3;
+    $self->{order_direction}||= ''; # hush undefined warnings
+
+    $self->{start_id} = $args{start_id} || 1;
+    $self->{threshold} = $args{threshold} || 1;
+    $self->{match_data} = $args{match_data};
+    $self->{limit} = $args{limit};
+
+    $self->{recursive} = $args{recursive} || 1;
+
+    return $self;
+
+} # End of new.
+
+# ------------------------------------------------
+
+sub traverse
+{
+    my $self = shift;
+
+    # allow local arguments to override defaults set in constructor:
+    my %args = @_;
+    while (my ($key, $val) = each %args) {
+	($self->{$key}, $args{$key}) = ($args{$key}, $self->{$key})
+    }
+
+    # reset limit counter:
+    $self->{limit_left} = $self->{limit};
+
+    my $rc;
+    unless ($self->{recursive} || ($self->{threshold} gt 1 && $self->{limit}) ) {
+	$rc = $self->_traverse_linear;
+    } else {
+	$rc = $self->_traverse_recursive;
+    }
+
+    # restore object defaults:
+    while (my ($key, $val) = each %args) {
+	($self->{$key}, $args{$key}) = ($args{$key}, $self->{$key})
+    }
+
+    return $rc;
+
+} # End of traverse.
+
+# ------------------------------------------------
+
+sub _traverse_linear
+{
   my $self = shift;
 
   $self->_do_query();
@@ -408,19 +398,41 @@ sub _traverse_linear {
 
   return 1;
 
-}
+} # End of _traverse_linear.
 
-# Autoload methods go after =cut, and are processed by the autosplit
-# program.
+# ------------------------------------------------
+
+sub _traverse_recursive
+{
+    my $self = shift;
+
+    $self->_handle_node($self->{start_id}, undef, [], [], 1);
+
+} # End of _traverse_recursive.
+
+# ------------------------------------------------
+
+sub tree
+{
+    carp("tree() use is deprecated; use traverse() instead.\n")
+	if $^W;
+
+    my $self = shift;
+    return $self->traverse(@_);
+
+} # End of tree.
+
+# ------------------------------------------------
 
 1;
-__END__
+
+=pod
 
 =head1 NAME
 
 DBIx::Tree - Generate a tree from a self-referential database table
 
-=head1 SYNOPSIS
+=head1 Synopsis
 
   use DBIx::Tree;
   # have DBIx::Tree build the necessary SQL from table & column names:
@@ -462,7 +474,7 @@ EOSQL
 
   $tree->traverse;
 
-=head1 DESCRIPTION
+=head1 Description
 
 When you've got one of those nasty self-referential tables that you
 want to bust out into a tree, this is the module to check out.
@@ -515,91 +527,49 @@ into:
         Nuts (004)
           Pecans (006)
 
-There are examples in the examples directory - one plain text example,
-and two Tk examples.
+See the examples/ directory for two Tk examples.
 
-=head1 Constructor arguments
+=head1 Installation
 
-  my $tree = new DBIx::Tree(connection => $dbh,
-                            table      => $table,
-                            sql        => $sql,
-                            sth        => $sth,
-                            method     => sub { disp_tree(@_) },
-                            columns    => [$id_col, $label_col, $parent_col],
-                            start_id   => $start_id,
-                            threshold  => $threshold,
-                            match_data => $match_data,
-                            limit      => $limit
-                            recursive  => 1 || 0);
+Install L<DBIx::Tree> as you would for any C<Perl> module:
+
+Run:
+
+	cpanm DBIx::Tree
+
+	Note: cpanm ships in App::cpanminus. See also App::perlbrew.
+
+or run:
+
+	sudo cpan DBIx::Tree
+
+or unpack the distro, and then either:
+
+	perl Build.PL
+	./Build
+	./Build test
+	sudo ./Build install
+
+or:
+
+	perl Makefile.PL
+	make (or dmake or nmake)
+	make test
+	make install
+
+=head1 Constructor and Initialization
+
+=head2 Calling new()
+
+C<new()> is called as C<< my($obj) = DBIx::Tree -> new(k1 => v1, k2 => v2, ...) >>.
+
+It returns a new object of type C<DBIx::Tree>.
+
+Key-value pairs accepted in the parameter list:
 
 =over 4
 
-=item connection
-
-A DBI connection handle. This parameter is always required. Earlier versions of this doc said it was
-not necessary when using the $sth option, but in that case omitting it gets an error on prepare_cached.
-
-=item table
-
-The database table containing the hierarchical data.  Unnecessary if
-you plan to provide either a custom SQL statement via the 'sql'
-parameter or a prepared DBI statement handle via the 'sth' parameter.
-
-=item sql
-
-A string containing a custom "SELECT" SQL query statement that returns
-the hierarchical data.  Unnecessary if all of the id/label/parent
-columns come from the same table specified by the 'table' parameter.
-Use only when you need to bring in supplementary information from
-other tables via custom "joins".  Note that providing an 'sql'
-argument will override any other 'table' specification.
-
-=item sth
-
-A prepared (but not yet executed!) DBI statement handle.  Unnecessary
-if you plan to provide either a basic table name via 'table' or a
-custom SQL statement via 'sql'.  Note that providing an 'sth' argument
-will override any other 'sql' or 'table' specification.
-
-=item method
-
-A callback method to be invoked each time a tree item is
-encountered. This method will be given a hashtable as a parameter,
-containing the following elements:
-
-  item:        the name of the item
-  level (0-n): the nesting level of the item.
-  id:          the unique id of the item.
-  parent_id:   an array ref containing the geneology of parent id's
-               for the current item
-  parent_name: an array ref containing the geneology of parent name's
-               for the current item
-
-If the 'threshold' parameter has been set (either via the new()
-constructor or in the call to traverse()), the callback will only
-occur if the tree item is 'threshold' or more levels deep in the
-hierarchy.
-
-=item post_method
-
-A callback method to be invoked after all the children of a tree item
-have been encountered. This method will be given a hashtable as a
-parameter, containing the following elements:
-
-  item:        the name of the item
-  level (0-n): the nesting level of the item.
-  id:          the unique id of the item.
-  parent_id:   an array ref containing the geneology of parent id's
-               for the current item
-  parent_name: an array ref containing the geneology of parent name's
-               for the current item
-
-If the 'threshold' parameter has been set (either via the new()
-constructor or in the call to traverse()), the callback will only
-occur if the tree item is 'threshold' or more levels deep in the
-hierarchy.
-
-=item columns:
+=item o columns => $ara_ref
 
 A reference to a list of three column names that can be found in the
 table/result set:
@@ -627,31 +597,63 @@ of those query types).
               the decision to the database (in most cases, this will
               be ascending)
 
-=item start_id
+=item o connection => $dbh
 
-The unique id of the root item.  Defaults to 1.  May be overriden by
-the 'start_id' argument to traverse().
+A DBI connection handle. This parameter is always required. Earlier versions of this doc said it was
+not necessary when using the $sth option, but in that case omitting it gets an error on prepare_cached.
 
-=item threshold
+=item o limit => $integer
 
-The level in the hierarchical tree at which to begin processing items.
-The root of the tree is considered to be at level 1.  May be overriden
-by the 'threshold' argument to traverse().
+Limit the number of rows using an SQL LIMIT clause - not all SQL
+servers support this. This feature was supplied by Ilia Lobsanov
+<ilia@lobsanov.com>
 
-=item match_data
+=item o match_data => $string
 
 The value of a partial match to look for - if this is supplied, only
 rows whose label_col matches (match_data + '%') this will be
 selected. This feature was supplied by Ilia Lobsanov
 <ilia@lobsanov.com>
 
-=item limit
+=item o method => $sub_name
 
-Limit the number of rows using an SQL LIMIT clause - not all SQL
-servers support this. This feature was supplied by Ilia Lobsanov
-<ilia@lobsanov.com>
+A callback method to be invoked each time a tree item is
+encountered. This method will be given a hashtable as a parameter,
+containing the following elements:
 
-=item recursive
+  item:        the name of the item
+  level (0-n): the nesting level of the item.
+  id:          the unique id of the item.
+  parent_id:   an array ref containing the geneology of parent id's
+               for the current item
+  parent_name: an array ref containing the geneology of parent name's
+               for the current item
+
+If the 'threshold' parameter has been set (either via the new()
+constructor or in the call to traverse()), the callback will only
+occur if the tree item is 'threshold' or more levels deep in the
+hierarchy.
+
+=item o post_method => $sub_name
+
+A callback method to be invoked after all the children of a tree item
+have been encountered. This method will be given a hashtable as a
+parameter, containing the following elements:
+
+  item:        the name of the item
+  level (0-n): the nesting level of the item.
+  id:          the unique id of the item.
+  parent_id:   an array ref containing the geneology of parent id's
+               for the current item
+  parent_name: an array ref containing the geneology of parent name's
+               for the current item
+
+If the 'threshold' parameter has been set (either via the new()
+constructor or in the call to traverse()), the callback will only
+occur if the tree item is 'threshold' or more levels deep in the
+hierarchy.
+
+=item o recursive => $Boolean
 
 Specifies which of two methods DBIx::Tree will use to traverse the
 tree.  The default is non-recursively, which is efficient in that it
@@ -664,19 +666,62 @@ threshold argument (implying that you want to see at most N records at
 or below the given threshold), the recursive method will be used
 automatically for efficiency.
 
+=item o sql => $sql_statement
+
+A string containing a custom "SELECT" SQL query statement that returns
+the hierarchical data.  Unnecessary if all of the id/label/parent
+columns come from the same table specified by the 'table' parameter.
+Use only when you need to bring in supplementary information from
+other tables via custom "joins".  Note that providing an 'sql'
+argument will override any other 'table' specification.
+
+=item o start_id => $integer
+
+The unique id of the root item.  Defaults to 1.  May be overriden by
+the 'start_id' argument to traverse().
+
+=item o sth => $db_sth
+
+A prepared (but not yet executed!) DBI statement handle.  Unnecessary
+if you plan to provide either a basic table name via 'table' or a
+custom SQL statement via 'sql'.  Note that providing an 'sth' argument
+will override any other 'sql' or 'table' specification.
+
+=item o table => $table_name
+
+The database table containing the hierarchical data.  Unnecessary if
+you plan to provide either a custom SQL statement via the 'sql'
+parameter or a prepared DBI statement handle via the 'sth' parameter.
+
+=item o threshold => $integer
+
+The level in the hierarchical tree at which to begin processing items.
+The root of the tree is considered to be at level 1.  May be overriden
+by the 'threshold' argument to traverse().
+
 =back
 
-=head1 DBIx::Tree Methods
+=head1 Methods
 
-=over 4
+=head2 new(%args)
 
-=item traverse(%args)
+  my $tree = new DBIx::Tree(connection => $dbh,
+                            table      => $table,
+                            sql        => $sql,
+                            sth        => $sth,
+                            method     => sub { disp_tree(@_) },
+                            columns    => [$id_col, $label_col, $parent_col],
+                            start_id   => $start_id,
+                            threshold  => $threshold,
+                            match_data => $match_data,
+                            limit      => $limit
+                            recursive  => 1 || 0);
+
+=head2 traverse(%args)
 
 Begins a depth-first traversal of the hierarchical tree.  The optional
 %args hash provides locally overriding values for the identical
 parameters set in the new() constructor.
-
-=back
 
 =head1 TODO
 
@@ -685,7 +730,7 @@ Better docs.
 Rewrite the algorithm.
 Separate data acquisition from data formatting.
 
-=head1 AUTHOR
+=head1 Authors
 
 Brian Jepson, bjepson@ids.net
 
@@ -702,10 +747,22 @@ on the module based on Brian Jepson's version 0.91 release.
 Co-maintenance since V 1.91 is by Ron Savage <rsavage@cpan.org>.
 Uses of 'I' in previous versions is not me, but will be hereafter.
 
-=head1 SEE ALSO
+=head1 See Also
 
-perl(1).
-DBI(3).
-Tk(3).
+L<DBIx::Tree::Persist>.
+
+L<Tree>.
+
+L<Tree::Binary>.
+
+L<Tree::DAG_Node>. My favourite.
+
+L<Tree::DAG_Node::Persist>.
+
+L<Tree::Persist>.
+
+L<Tree::Simple>.
+
+L<Tree::Simple::Visitor::Factory>.
 
 =cut

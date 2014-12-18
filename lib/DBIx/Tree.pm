@@ -730,23 +730,6 @@ Better docs.
 Rewrite the algorithm.
 Separate data acquisition from data formatting.
 
-=head1 Authors
-
-Brian Jepson, bjepson@ids.net
-
-This module was inspired by the Expanding Hierarchies example that I
-stumbled across in the Microsoft SQL Server Database Developer's
-Companion section of the Microsoft SQL Server Programmer's Toolkit.
-
-Jan Mach <machj@ders.cz> contributed substantial performance
-improvements, ordering handling for tree output, and other bug fixes.
-
-Aaron Mackey <amackey@virginia.edu> has continued active development
-on the module based on Brian Jepson's version 0.91 release.
-
-Co-maintenance since V 1.91 is by Ron Savage <rsavage@cpan.org>.
-Uses of 'I' in previous versions is not me, but will be hereafter.
-
 =head1 See Also
 
 L<DBIx::Tree::Persist>.
@@ -764,5 +747,36 @@ L<Tree::Persist>.
 L<Tree::Simple>.
 
 L<Tree::Simple::Visitor::Factory>.
+
+=head1 Machine-Readable Change Log
+
+The file Changes was converted into Changelog.ini by L<Module::Metadata::Changes>.
+
+=head1 Repository
+
+L<https://github.com/ronsavage/DBIx-Tree>
+
+=head1 Support
+
+Email the author, or log a bug on RT:
+
+L<https://rt.cpan.org/Public/Dist/Display.html?Name=DBIx-Tree>.
+
+=head1 Authors
+
+Brian Jepson, bjepson@ids.net
+
+This module was inspired by the Expanding Hierarchies example that I
+stumbled across in the Microsoft SQL Server Database Developer's
+Companion section of the Microsoft SQL Server Programmer's Toolkit.
+
+Jan Mach <machj@ders.cz> contributed substantial performance
+improvements, ordering handling for tree output, and other bug fixes.
+
+Aaron Mackey <amackey@virginia.edu> has continued active development
+on the module based on Brian Jepson's version 0.91 release.
+
+Co-maintenance since V 1.91 is by Ron Savage <rsavage@cpan.org>.
+Uses of 'I' in previous versions is not me, but will be hereafter.
 
 =cut

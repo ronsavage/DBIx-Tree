@@ -1,30 +1,13 @@
 use strict;
 use warnings;
 
+# Before `make install' is performed this script should be runnable with
+# `make test'. After `make install' it should work as `perl test.pl'
+
 ######################### We start with some black magic to print on failure.
 
 # Change 1..1 below to 1..last_test_to_print .
 # (It may become useful if the test is moved to ./t subdirectory.)
-
-our $compare;
-our $rc;
-
-our $loaded = 0;
-
-BEGIN { $| = 1; print "1..11\n"; }
-END {print "not ok 1\n" unless $loaded;}
-
-# Before `make install' is performed this script should be runnable with
-# `make test'. After `make install' it should work as `perl test.pl'
-
-sub disp_tree {
-    my(%param) = @_;
-	#print STDERR ($param{item} || 'N/A'), "\n";
-    my $item = $param{item};
-    $item =~ s/^\s+//;
-    $item =~ s/\s+$//;
-    $compare .= $item;
-}
 
 use DBI;
 
@@ -33,14 +16,31 @@ use DBIx::Tree;
 use File::Spec;
 use File::Temp;
 
+use Test::More;
+
+our $compare;
+our $rc;
+
+our $loaded = 0;
+
+# ------------------------------------------------
+
+sub display_tree
+{
+    my(%param) = @_;
+    my $item = $param{item};
+    $item =~ s/^\s+//;
+    $item =~ s/\s+$//;
+
+    $compare .= $item;
+
+} # End of display_tree.
+
+# ------------------------------------------------
+
 $loaded = 1;
-print "ok 1\n";
 
-######################### End of black magic.
-
-# Insert your test code below (better if it prints "ok 13"
-# (correspondingly "not ok 13") depending on the success of chunk 13
-# of the test code):
+ok($loaded == 1, 'Module loaded');
 
 ############# create and populate the table we need.
 
@@ -54,16 +54,16 @@ $ENV{DBI_PASS} || '',
 );
 
 my $dbh = DBI->connect(@opts, {RaiseError => 0, PrintError => 1, AutoCommit => 1});
-if ( defined $dbh ) {
-        print "ok 2\n";
-} else {
-        print "not ok 2\n";
-        die $DBI::errstr;
-}
 
-open (INSTALL, "t/INSTALL.SQL")
-  or (print "not ok 2\n" and die "Could not open t/INSTALL.SQL for reading!");
-while(<INSTALL>) {
+ok(defined $dbh, "Connected to $opts[0]");
+
+diag 'You may get a warning here: DBD::SQLite::db prepare failed: no such table: food. Just ignore it';
+
+my($error) = open(my $fh, '<', 't/INSTALL.SQL');
+
+ok($error, 'Opened t/INSTALL.SQL for reading!');
+
+while(<$fh>) {
         chomp;
 
 	# strip out NULL for mSQL
@@ -84,139 +84,121 @@ while(<INSTALL>) {
         #
         if (!$rc) {
           if (/^drop/i) {
-            print STDERR "Ignoring failed DROP operation.\n"
+            diag 'Ignoring failed DROP operation';
           } else {
-            print "not ok 2\n";
-            die "$DBI::errstr";
+            diag "Failed drop statement: $DBI::errstr";
           }
         }
 }
-close (INSTALL);
+
+close ($fh);
 
 ############# create an instance of the DBIx::Tree
 {
-my $tree = new DBIx::Tree( connection => $dbh,
-			   table      => 'food',
-			   method     => sub { disp_tree(@_) },
-			   columns    => ['id', 'food', 'parent_id'],
-			   start_id   => '001');
-if(ref $tree eq 'DBIx::Tree') {
-    print "ok 3\n";
-} else {
-    print "not ok 3\n";
+	# Test traverse().
+
+	my $tree = DBIx::Tree -> new
+		(
+			connection => $dbh,
+			table      => 'food',
+			method     => sub { display_tree(@_) },
+			columns    => ['id', 'food', 'parent_id'],
+			start_id   => '001',
+		);
+
+	ok(ref $tree eq 'DBIx::Tree', 'Create object to read table');
+
+	ok($tree -> _do_query, 'Executed query');
+
+	$tree->traverse;
+
+	ok($compare eq 'FoodBeans and NutsBeansBlack BeansKidney BeansBlack Kidney BeansRed Kidney BeansNutsPecansDairyBeveragesCoffee MilkSkim MilkWhole MilkCheesesCheddarGoudaMuensterStiltonSwiss', 'Called traverse()');
 }
 
-############# call do_query
-if ($tree->_do_query) {
-    print "ok 4\n";
-} else {
-    print "not ok 4\n";
-}
 
-############# call tree
-
-$tree->traverse;
-$rc = $compare eq 'FoodBeans and NutsBeansBlack BeansKidney BeansBlack Kidney BeansRed Kidney BeansNutsPecansDairyBeveragesCoffee MilkSkim MilkWhole MilkCheesesCheddarGoudaMuensterStiltonSwiss';
-if ($rc == 1) {
-    print "ok 5\n";
-} else {
-    print "not ok 5\n";
-}
-
-}
-############# create another instance of the DBIx::Tree
 {
-my $tree = new DBIx::Tree(connection => $dbh,
-                          table      => 'food',
-                          method     => sub { disp_tree(@_) },
-                          columns    => ['id', 'food', 'parent_id'],
-                          start_id   => '001',
-                          match_data => 'Dairy');
-$compare = "";
-$tree->traverse;
-$rc = $compare eq 'Dairy';
+	# Test match_data.
 
-if ($rc == 1) {
-    print "ok 6\n";
-} else {
-    print "not ok 6: $compare\n";
+	my $tree = DBIx::Tree -> new
+		(
+			connection => $dbh,
+			table      => 'food',
+			method     => sub { display_tree(@_) },
+			columns    => ['id', 'food', 'parent_id'],
+			start_id   => '001',
+			match_data => 'Dairy',
+		);
+
+	$compare = '';
+
+	$tree->traverse;
+
+	ok($compare eq 'Dairy', 'Another traverse()');
+
+	# Test traverse().
+
+	$compare = '';
+
+	$tree->traverse(start_id => '011', threshold => 2, match_data => '', limit => 2);
+
+	ok($compare eq 'Coffee MilkSkim Milk', 'Test local variables in traverse()');
+
+	$compare = '';
+
+	$tree->traverse;
+
+	ok($compare eq 'Dairy', 'Test default values in traverse()');
 }
 
-############# test local variables in traverse()
-
-$compare = "";
-$tree->traverse(start_id => '011', threshold => 2, match_data => '', limit => 2);
-$rc = $compare eq 'Coffee MilkSkim Milk';
-
-if ($rc == 1) {
-    print "ok 7\n";
-} else {
-    print "not ok 7: $compare\n";
-}
-
-### OK, now see if the default settings still work:
-
-$compare = "";
-$tree->traverse;
-$rc = $compare eq 'Dairy';
-
-if ($rc == 1) {
-    print "ok 8\n";
-} else {
-    print "not ok 8: $compare\n";
-}
-}
-
-############# check out 'sth' constructor
 {
-my $sth = $dbh->prepare('select id, food, parent_id from food order by food');
-my $tree = new DBIx::Tree(connection => $dbh,
-                          sth        => $sth,
-                          method     => sub { disp_tree(@_) },
-                          columns    => ['id', 'food', 'parent_id'],
-                          start_id   => '001');
-$compare = "";
-$tree->traverse;
-$rc = $compare eq 'FoodBeans and NutsBeansBlack BeansKidney BeansBlack Kidney BeansRed Kidney BeansNutsPecansDairyBeveragesCoffee MilkSkim MilkWhole MilkCheesesCheddarGoudaMuensterStiltonSwiss';
+	# Test 'sth' in new().
 
-if ($rc == 1) {
-    print "ok 9\n";
-} else {
-    print "not ok 9: $compare\n";
-}
+	my $sth = $dbh->prepare('select id, food, parent_id from food order by food');
+	my $tree = DBIx::Tree -> new
+		(
+			connection => $dbh,
+			sth        => $sth,
+			method     => sub { display_tree(@_) },
+			columns    => ['id', 'food', 'parent_id'],
+			start_id   => '001',
+		);
+
+	$compare = '';
+
+	$tree->traverse;
+
+	ok($compare eq 'FoodBeans and NutsBeansBlack BeansKidney BeansBlack Kidney BeansRed Kidney BeansNutsPecansDairyBeveragesCoffee MilkSkim MilkWhole MilkCheesesCheddarGoudaMuensterStiltonSwiss', 'sth in new()');
 }
 
-############# check out 'sql' constructor
 {
-my $sql = 'select id, food, parent_id from food order by food';
-my $tree = new DBIx::Tree(connection => $dbh,
-                          sql        => $sql,
-                          method     => sub { disp_tree(@_) },
-                          columns    => ['id', 'food', 'parent_id'],
-                          start_id   => '001');
-$compare = "";
-$tree->traverse;
-$rc = $compare eq 'FoodBeans and NutsBeansBlack BeansKidney BeansBlack Kidney BeansRed Kidney BeansNutsPecansDairyBeveragesCoffee MilkSkim MilkWhole MilkCheesesCheddarGoudaMuensterStiltonSwiss';
+	# Test 'sql' in new().
 
-if ($rc == 1) {
-    print "ok 10\n";
-} else {
-    print "not ok 10: $compare\n";
+	my $sql = 'select id, food, parent_id from food order by food';
+	my $tree = DBIx::Tree -> new
+		(
+			connection => $dbh,
+			sql        => $sql,
+			method     => sub { display_tree(@_) },
+			columns    => ['id', 'food', 'parent_id'],
+			start_id   => '001',
+		);
+
+	$compare = '';
+
+	$tree->traverse;
+
+	ok($compare eq 'FoodBeans and NutsBeansBlack BeansKidney BeansBlack Kidney BeansRed Kidney BeansNutsPecansDairyBeveragesCoffee MilkSkim MilkWhole MilkCheesesCheddarGoudaMuensterStiltonSwiss', 'sql in new()');
+
+	# Test recursive option to traverse().
+
+	$compare = '';
+
+	$tree->traverse(recursive => 1);
+
+	ok($compare eq 'FoodBeans and NutsBeansBlack BeansKidney BeansBlack Kidney BeansRed Kidney BeansNutsPecansDairyBeveragesCoffee MilkSkim MilkWhole MilkCheesesCheddarGoudaMuensterStiltonSwiss', 'recursive option to traverse()');
 }
 
-############# check out the recursive function: repeat above tests
-
-$compare = "";
-$tree->traverse(recursive => 1);
-$rc = $compare eq 'FoodBeans and NutsBeansBlack BeansKidney BeansBlack Kidney BeansRed Kidney BeansNutsPecansDairyBeveragesCoffee MilkSkim MilkWhole MilkCheesesCheddarGoudaMuensterStiltonSwiss';
-
-if ($rc == 1) {
-    print "ok 11\n";
-} else {
-    print "not ok 11: $compare\n";
-}
-}
-
-############# close the dbh
 $dbh->do(q{drop table food});
 $dbh->disconnect;
+
+done_testing;

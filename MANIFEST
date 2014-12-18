@@ -9,6 +9,7 @@ MANIFEST
 META.json
 META.yml
 README
+scripts/demo.t
 t/INSTALL.SQL
 t/pod.t
 t/test.t

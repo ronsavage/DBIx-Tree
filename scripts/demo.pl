@@ -15,16 +15,19 @@ use File::Temp;
 sub display_tree
 {
 	my(%param)  = @_;
-	my $item    = $param{item};
+	my($item)   = $param{item};
 	$item       =~ s/^\s+//;
 	$item       =~ s/\s+$//;
 	my($indent) = '  ' x ($param{level} - 1);
+	my($s)      = "$indent$item ($param{id}). Parents: ";
+	my($count)  = $#{$param{parent_id} };
 
-	print "$indent$param{id}: $item. Parent ids: ",
-		join('-', reverse @{$param{parent_id} }),
-		'. Parent names: ',
-		join('-', reverse@{$param{parent_name} }),
-		"\n";
+	if ($param{level} > 1)
+	{
+		$s .= join(' -> ', map{"$param{parent_name}[$count - $_] ($param{parent_id}[$count - $_])"} 0 .. $count);
+	}
+
+	print "$s\n";
 
 } # End of display_tree.
 

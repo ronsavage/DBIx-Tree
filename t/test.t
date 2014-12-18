@@ -27,12 +27,12 @@ our $loaded = 0;
 
 sub display_tree
 {
-    my(%param) = @_;
-    my $item = $param{item};
-    $item =~ s/^\s+//;
-    $item =~ s/\s+$//;
+	my(%param) = @_;
+	my $item = $param{item};
+	$item =~ s/^\s+//;
+	$item =~ s/\s+$//;
 
-    $compare .= $item;
+	$compare .= $item;
 
 } # End of display_tree.
 
@@ -63,32 +63,37 @@ my($error) = open(my $fh, '<', 't/INSTALL.SQL');
 
 ok($error, 'Opened t/INSTALL.SQL for reading!');
 
-while(<$fh>) {
-        chomp;
+while(<$fh>)
+{
+	chomp;
 
 	# strip out NULL for mSQL
-	#
+
 	if (/^create/i and $opts[0] =~ /msql/i) {
 	    s/null//gi;
 	}
 
-        my $sth = $dbh->prepare($_);
+	my $sth = $dbh->prepare($_);
 
-		# Skip failure to drop non-existent table.
+	# Skip failure to drop non-existent table.
 
-		next if (! defined $sth);
+	next if (! defined $sth);
 
-        my $rc = $sth->execute;
+	my $rc = $sth->execute;
 
-        # ignore drop table.
-        #
-        if (!$rc) {
-          if (/^drop/i) {
-            diag 'Ignoring failed DROP operation';
-          } else {
-            diag "Failed drop statement: $DBI::errstr";
-          }
-        }
+	# ignore drop table.
+
+	if (!$rc)
+	{
+		if (/^drop/i)
+		{
+			diag 'Ignoring failed DROP operation';
+		}
+		else
+		{
+			diag "Failed drop statement: $DBI::errstr";
+		}
+	}
 }
 
 close ($fh);

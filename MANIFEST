@@ -11,7 +11,7 @@ MANIFEST
 META.json
 META.yml
 README
-scripts/demo.t
+scripts/demo.pl
 t/INSTALL.SQL
 t/pod.t
 t/test.t

@@ -618,11 +618,11 @@ selected. This feature was supplied by Ilia Lobsanov
 =item o method => $sub_name
 
 A callback method to be invoked each time a tree item is
-encountered. This method will be given a hashtable as a parameter,
+encountered. This method will be given a hash as a parameter,
 containing the following elements:
 
   item:        the name of the item
-  level (0-n): the nesting level of the item.
+  level (1-n): the nesting level of the item.
   id:          the unique id of the item.
   parent_id:   an array ref containing the geneology of parent id's
                for the current item
@@ -637,7 +637,7 @@ hierarchy.
 =item o post_method => $sub_name
 
 A callback method to be invoked after all the children of a tree item
-have been encountered. This method will be given a hashtable as a
+have been encountered. This method will be given a hash as a
 parameter, containing the following elements:
 
   item:        the name of the item

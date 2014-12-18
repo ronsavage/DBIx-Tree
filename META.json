@@ -47,7 +47,10 @@
    "resources" : {
       "license" : [
          "http://www.perlfoundation.org/artistic_license_2_0"
-      ]
+      ],
+      "repository" : {
+         "url" : "https://github.com/ronsavage/DBIx-Tree"
+      }
    },
    "version" : "1.97"
 }

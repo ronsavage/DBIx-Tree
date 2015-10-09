@@ -734,6 +734,8 @@ Separate data acquisition from data formatting.
 
 L<DBIx::Tree::Persist>.
 
+L<Parse::Taxonomy>.
+
 L<Tree>.
 
 L<Tree::Binary>.

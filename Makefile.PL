@@ -36,12 +36,17 @@ my(%params) =
 		'File::Spec'	=> 3.31,
 		'File::Temp'	=> 0.22,
 		'strict'		=> 0,
-		'Test::More'	=> 1.001014,
-		'Test::Pod'		=> 1.48,
 		'vars'			=> 0,
 		'warnings'		=> 0,
 	},
+	TEST_REQUIRES =>
+	{
+		'Test::More'	=> 1.001014,
+		'Test::Pod'		=> 1.48,
+	},
 	VERSION_FROM => 'lib/DBIx/Tree.pm',
+	INSTALLDIRS		=> 'site',
+	EXE_FILES		=> [],
 );
 
 if ( ($ExtUtils::MakeMaker::VERSION =~ /^\d\.\d\d$/) && ($ExtUtils::MakeMaker::VERSION > 6.30) )
